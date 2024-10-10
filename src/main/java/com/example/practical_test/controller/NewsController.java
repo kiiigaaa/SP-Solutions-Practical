@@ -8,35 +8,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/news")
+@RequestMapping("/news")
 public class NewsController {
     @Autowired
     private NewsService newsService;
 
-
-    @GetMapping("/category/{categoryId}")
-    public List<News> getNewsByCategory(@PathVariable Long categoryId) {
-        return newsService.findByCategory(categoryId);
+    @GetMapping
+    public List<News> getAllNews() {
+        return newsService.getAllNews();
     }
 
-    @GetMapping("/{id}")
-    public News getNewsById(@PathVariable Long id) {
-        return newsService.findById(id);
+    @GetMapping("/category/{name}")
+    public List<News> getNewsByCategory(@PathVariable String name) {
+        return newsService.getNewsByCategory(name);
     }
 
     @PostMapping
     public News createNews(@RequestBody News news) {
-        return newsService.save(news);
-    }
-
-    @PutMapping("/{id}")
-    public News updateNews(@PathVariable Long id, @RequestBody News news) {
-        news.setId(id);
-        return newsService.save(news);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteNews(@PathVariable Long id) {
-        newsService.delete(id);
+        return newsService.saveNews(news);
     }
 }

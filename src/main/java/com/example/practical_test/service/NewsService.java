@@ -12,19 +12,16 @@ public class NewsService {
     @Autowired
     private NewsRepository newsRepository;
 
-    public List<News> findByCategory(Long categoryId) {
-        return newsRepository.findByCategories_Id(categoryId);
+    public List<News> getAllNews() {
+        return newsRepository.findAll();
     }
 
-    public News findById(Long id) {
-        return newsRepository.findById(id).orElse(null);
-    }
-
-    public News save(News news) {
+    public News saveNews(News news) {
         return newsRepository.save(news);
     }
 
-    public void delete(Long id) {
-        newsRepository.deleteById(id);
+    public List<News> getNewsByCategory(String categoryName) {
+        return newsRepository.findByCategoriesName(categoryName);
     }
+
 }

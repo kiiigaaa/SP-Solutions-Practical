@@ -1,7 +1,9 @@
 package com.example.practical_test.service;
 
 import com.example.practical_test.model.Comment;
+import com.example.practical_test.model.News;
 import com.example.practical_test.repository.CommentRepository;
+import com.example.practical_test.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +14,17 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Comment> findByNews(Long newsId) {
-        return commentRepository.findByNews_Id(newsId);
-    }
+    @Autowired
+    private NewsRepository newsRepository;
 
-    public Comment findById(Long id) {
-        return commentRepository.findById(id).orElse(null);
-    }
-
-    public Comment save(Comment comment) {
+    public Comment saveComment(Long newsId, Comment comment) {
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(() -> new RuntimeException("News not found"));
+        comment.setNews(news);
         return commentRepository.save(comment);
     }
 
-    public void delete(Long id) {
-        commentRepository.deleteById(id);
+    public List<Comment> getCommentsByNewsId(Long newsId) {
+        return commentRepository.findByNewsId(newsId);
     }
 }
